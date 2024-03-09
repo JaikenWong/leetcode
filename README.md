@@ -101,8 +101,28 @@ class Solution {
 
 ### 1.5 [打家劫舍](https://leetcode.cn/problems/house-robber/description/?envType=study-plan-v2&envId=dynamic-programming)
 
-> 
+> 对于最后一家 下标 n只有两种结果，抢还是不抢，不抢是s[n-1] + 0 抢了是s[n-2] + nums[n]，比较二者即可
 
 ```Java
-
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            //s1
+            return nums[0];
+        }
+        if (n == 2) {
+            //s2
+            return Math.max(nums[0], nums[1]);
+        }
+        // sn = Math.max(s[n-1],s[n-2]+nums[n-1])
+        int si=0,pre=nums[0],curr=Math.max(nums[0], nums[1]);
+        for (int i = 3; i <= n; i++) {
+            si = Math.max(curr,pre+nums[i-1]);
+            pre = curr;
+            curr = si;
+        }
+        return si;
+    }
+}
 ```
