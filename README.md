@@ -173,3 +173,34 @@ class Solution {
     }
 }
 ```
+
+## 2. 矩阵类型
+
+### 2.1 [不同路径](https://leetcode.cn/problems/unique-paths/description/?envType=study-plan-v2&envId=dynamic-programming)
+
+> 坐标为 0 行的 或者0 列的可以初始化填充1 只有一种途径可以到达, 其余的位置 需要用上方的结果加上左侧的结果,以m =3 n=7 为例
+![alt text](images/2-1-0.png)
+
+```Java
+class Solution {
+    public int uniquePaths(int m, int n) {
+        if(m<2||n<2){
+            return 1;
+        }
+        int[][] arr = new int[m][n];
+        for(int i =1;i<m;i++){
+            arr[i][0] = 1;
+        }
+        for(int i =1;i<n;i++){
+            arr[0][i] = 1;
+        }
+        for(int i =1;i<m;i++){
+            for(int j=1;j<n;j++){
+                arr[i][j] = arr[i-1][j]+arr[i][j-1];
+            }
+        }
+        return arr[m-1][n-1];
+    }
+}
+```
+
