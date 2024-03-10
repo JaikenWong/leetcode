@@ -2,7 +2,7 @@
 
 # Leetcode
 
-## 1. 动态规划基础版
+## 1. 斐波那契类型
 
 ### 1.1 [爬楼梯](https://leetcode.cn/problems/climbing-stairs/?envType=study-plan-v2&envId=dynamic-programming)
 
