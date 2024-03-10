@@ -126,3 +126,50 @@ class Solution {
     }
 }
 ```
+
+### 1.6 [删除并获得点数](https://leetcode.cn/problems/delete-and-earn/description/?envType=study-plan-v2&envId=dynamic-programming)
+
+> 每个数字不管出现几次，只要拿了就应该全部拿光，这样也就可以将出现的数字去重排序，中间缺位的用0 补齐 比如[2,2,2,5,4] 可以去重排序补齐为[2,0,4,5],进而变形为[6,0,4,5]就可以按照1.5 打家劫舍中的情况进行处理，相邻的不能都取。
+
+```Java
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        Map<Integer, Integer> map = new TreeMap<>();
+
+        for (int num : nums) {
+            map.compute(num, new BiFunction<Integer, Integer, Integer>() {
+                @Override
+                public Integer apply(Integer t, Integer u) {
+                    u = u == null ? 0 : u;
+                    return t + u;
+                }
+            });
+        }
+        List<Integer> keyList = new ArrayList<>(map.keySet());
+        int min = keyList.get(0);
+        int len = keyList.get(keyList.size() - 1) - keyList.get(0);
+        int[] newNums = new int[len + 1];
+        for (int i = 0; i <=len ; i++) {
+            newNums[i] = map.containsKey(i+min) ? map.get(i+min) : 0;
+        }
+
+        //System.out.println(map);
+
+        if (newNums.length == 1) {
+            return newNums[0];
+        }
+        if (newNums.length == 2) {
+            return Math.max(newNums[0], newNums[1]);
+        }
+        int pre = newNums[0], curr = Math.max(newNums[0], newNums[1]);
+        int sn = 0;
+        for (int n = 3; n <= newNums.length; n++) {
+            sn = Math.max(pre + newNums[n - 1], curr);
+            pre = curr;
+            curr = sn;
+        }
+        //System.out.println(sn);
+        return sn;
+    }
+}
+```
