@@ -204,3 +204,130 @@ class Solution {
 }
 ```
 
+### 2.2 [最小路径和](https://leetcode.cn/problems/minimum-path-sum/description/?envType=study-plan-v2&envId=dynamic-programming)
+
+> 还是渐进画表的方式，第一行和第一列可以直接计算出来，其他的位置要通过上方和左方的值比较后进行取最小值（状态转移方程），整体计算完后则最后一个值则是目标值。
+
+```Java
+class Solution {
+    public int minPathSum(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        if (m == 1 && n == 1) {
+            return grid[0][0];
+        }
+
+        for (int i = 1; i < n; i++) {
+            grid[0][i] += grid[0][i - 1];
+        }
+
+        for (int i = 1; i < m; i++) {
+            grid[i][0] += grid[i - 1][0];
+        }
+
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                grid[i][j] = Math.min(grid[i][j] + grid[i - 1][j], grid[i][j] + grid[i][j - 1]);
+            }
+        }
+
+        return grid[m - 1][n - 1];
+
+    }
+}
+```
+
+### 2.3 [不同路径 II](https://leetcode.cn/problems/unique-paths-ii/description/?envType=study-plan-v2&envId=dynamic-programming)
+
+> 如果初始位置和终点位置是障碍物 则没有路径可以从头到尾，其他情况，要先标记障碍物，之后对到达每个位置的路径可能性进行计算，计算方式是上方的位置的路径数加上左侧的路径数(状态转移方程)。
+
+```Java
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        if (obstacleGrid[0][0] == 1) {
+            return 0;
+        }
+
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+
+        if(obstacleGrid[m-1][n-1] ==1){
+            return 0;
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (obstacleGrid[i][j] == 1) {
+                    // 找出障碍物并标记
+                    obstacleGrid[i][j] = -1;
+                }
+            }
+        }
+
+        obstacleGrid[0][0] = 1;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+            
+                if (obstacleGrid[i][j] == -1) {
+                    
+                } else {
+                    int left = j - 1 >= 0 && obstacleGrid[i][j - 1] != -1 ? obstacleGrid[i][j - 1] : 0;
+                
+                    int up = i - 1 >= 0 && obstacleGrid[i - 1][j] != -1 ? obstacleGrid[i - 1][j] : 0;
+                
+                    if (i != 0 || j != 0) {
+                        obstacleGrid[i][j] = left + up;
+                    }
+                }
+            }
+        }
+        return obstacleGrid[m - 1][n - 1];
+    }
+}
+```
+
+### 2.4 [三角形最小路径和](https://leetcode.cn/problems/triangle/description/?envType=study-plan-v2&envId=dynamic-programming)
+
+> 将树转化为一个在左下方的表格，从上一层到下一层，只能到达当前列和下一列。  
+   2
+  3 4
+ 6 5 7
+4 1 8 3
+
+```Java
+class Solution {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int m = triangle.size();
+        int n = m;
+
+        if (m == 1) {
+            return triangle.get(0).get(0);
+        }
+        if (m == 2) {
+            return Math.min(triangle.get(0).get(0) + triangle.get(1).get(0),triangle.get(0).get(0) + triangle.get(1).get(1));
+        }
+
+        int[][] arr = new int[m][n];
+        // m>= 3 时初始化表格
+        arr[0][0] = triangle.get(0).get(0);
+        for (int i = 1; i < m; i++) {
+            arr[i][0] = arr[i - 1][0] + triangle.get(i).get(0);
+            arr[i][i] = arr[i - 1][i - 1] + triangle.get(i).get(i);
+        }
+
+        for (int i = 2; i < m; i++) {
+            for (int j = 1; j < i; j++) {
+                arr[i][j] = Math.min(arr[i - 1][j], arr[i - 1][j - 1]) + triangle.get(i).get(j);
+            }
+        }
+
+        int min = arr[m - 1][0];
+        for (int i : arr[m - 1]) {
+            min = i < min ? i : min;
+        }
+
+        return min;
+    }
+}
+```
