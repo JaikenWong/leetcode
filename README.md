@@ -336,6 +336,7 @@ class Solution {
 
 ![alt text](/images/2-5-0.png)
 
+![alt text](/images/2-5-1.png)
 ```Java
 class Solution {
     public int maximalSquare(char[][] matrix) {
