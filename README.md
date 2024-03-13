@@ -332,7 +332,7 @@ class Solution {
 }
 ```
 
-### 2.5 [最大长方形](https://leetcode.cn/problems/maximal-square/description/?envType=study-plan-v2&envId=dynamic-programming)
+### 2.5 [最大正方形](https://leetcode.cn/problems/maximal-square/description/?envType=study-plan-v2&envId=dynamic-programming)
 
 ![alt text](/images/2-5-0.png)
 
